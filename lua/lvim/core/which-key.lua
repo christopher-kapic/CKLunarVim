@@ -24,9 +24,11 @@ M.config = function()
           g = false, -- bindings for prefixed with g
         },
       },
-      -- add operators that will trigger motion and text object completion
-      -- to enable all native operators, set the preset / operators plugin above
-      defer = { gc = "Comments" },
+      -- Start hidden and wait for a key to be pressed before showing the popup
+      -- Only used by enabled xo mapping modes.
+      defer = function(ctx)
+        return ctx.mode == "V" or ctx.mode == "<C-V>"
+      end,
       replace = {
         -- override the label used to display some keys. It doesn't effect WK in any other way.
         -- For example:
@@ -44,17 +46,14 @@ M.config = function()
         scroll_up = "<c-u>", -- binding to scroll up inside the popup
       },
       win = {
-        border = "single", -- none, single, double, shadow
-        position = "bottom", -- bottom, top
-        margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
-        padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
-        winblend = 0,
+        padding = { 2, 2 }, -- extra window padding [top/bottom, right/left]
+        wo = {
+          winblend = 0,
+        },
       },
       layout = {
-        height = { min = 4, max = 25 }, -- min and max height of the columns
         width = { min = 20, max = 50 }, -- min and max width of the columns
         spacing = 3, -- spacing between columns
-        align = "left", -- align columns left, center or right
       },
       -- filter option replaces ignore_missing
       -- Set to nil to show all mappings (old ignore_missing = false)
@@ -62,34 +61,17 @@ M.config = function()
       filter = nil,
       show_help = true, -- show help message on the command line when the popup is visible
       show_keys = true, -- show the currently pressed key and its label as a message in the command line
-      -- triggers must be a table (not "auto" string)
-      triggers = { "<leader>" }, -- automatically setup triggers for <leader>
-      -- Note: triggers_blacklist is deprecated in favor of triggers
-      -- The blacklist functionality may need to be configured differently in the new API
-      -- For now, we'll rely on the default behavior
+      -- Which-key automatically sets up triggers for your mappings.
+      -- Using auto triggers for all modes (nixso)
+      triggers = {
+        { "<auto>", mode = "nxso" },
+      },
       -- disable the WhichKey popup for certain buf types and file types.
       -- Disabled by default for Telescope
       disable = {
-        buftypes = {},
-        filetypes = { "TelescopePrompt" },
+        bt = {},
+        ft = { "TelescopePrompt" },
       },
-    },
-
-    opts = {
-      mode = "n", -- NORMAL mode
-      prefix = "<leader>",
-      buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-      silent = true,
-      noremap = true,
-      nowait = true,
-    },
-    vopts = {
-      mode = { "v" }, -- VISUAL mode
-      prefix = "<leader>",
-      buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-      silent = true,
-      noremap = true,
-      nowait = true,
     },
     -- NOTE: Prefer using : over <cmd> as the latter avoids going back in normal-mode.
     -- see https://neovim.io/doc/user/map.html#:map-cmd
@@ -237,15 +219,30 @@ M.setup = function()
 
   which_key.setup(lvim.builtin.which_key.setup)
 
-  local opts = lvim.builtin.which_key.opts
-  local vopts = lvim.builtin.which_key.vopts
+  -- Helper function to prepend leader prefix to mapping keys
+  local function prepend_leader(mapping_table, mode)
+    local result = {}
+    for _, mapping in ipairs(mapping_table) do
+      local new_mapping = vim.deepcopy(mapping)
+      if type(new_mapping[1]) == "string" then
+        new_mapping[1] = "<leader>" .. new_mapping[1]
+      end
+      if mode then
+        new_mapping.mode = mode
+      end
+      table.insert(result, new_mapping)
+    end
+    return result
+  end
 
   local mappings = lvim.builtin.which_key.mappings
   local vmappings = lvim.builtin.which_key.vmappings
 
-  -- Register mappings - which-key will expand <leader> automatically
-  which_key.register(mappings, opts)
-  which_key.register(vmappings, vopts)
+  -- Add mappings with leader prefix prepended
+  -- Normal mode mappings
+  which_key.add(prepend_leader(mappings, "n"))
+  -- Visual mode mappings
+  which_key.add(prepend_leader(vmappings, "v"))
 
   if lvim.builtin.which_key.on_config_done then
     lvim.builtin.which_key.on_config_done(which_key)
