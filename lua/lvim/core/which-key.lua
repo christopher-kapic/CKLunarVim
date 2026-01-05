@@ -63,16 +63,10 @@ M.config = function()
       show_help = true, -- show help message on the command line when the popup is visible
       show_keys = true, -- show the currently pressed key and its label as a message in the command line
       -- triggers must be a table (not "auto" string)
-      -- blacklist is merged into triggers table
-      triggers = {
-        "<leader>", -- automatically setup triggers for <leader>
-        blacklist = {
-          -- list of mode / prefixes that should never be hooked by WhichKey
-          -- this is mostly relevant for key maps that start with a native binding
-          i = { "j", "k" },
-          v = { "j", "k" },
-        },
-      },
+      triggers = { "<leader>" }, -- automatically setup triggers for <leader>
+      -- Note: triggers_blacklist is deprecated in favor of triggers
+      -- The blacklist functionality may need to be configured differently in the new API
+      -- For now, we'll rely on the default behavior
       -- disable the WhichKey popup for certain buf types and file types.
       -- Disabled by default for Telescope
       disable = {
