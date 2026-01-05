@@ -77,32 +77,23 @@ M.config = function()
 
     opts = {
       mode = "n", -- NORMAL mode
-      prefix = "<leader>",
+      -- Options like nowait, remap, silent are specified in each mapping entry
       buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-      silent = true, -- use `silent` when creating keymaps
-      noremap = true, -- use `noremap` when creating keymaps
-      nowait = true, -- use `nowait` when creating keymaps
     },
     vopts = {
-      mode = "v", -- VISUAL mode
-      prefix = "<leader>",
+      mode = { "v" }, -- VISUAL mode
+      -- Options like nowait, remap, silent are specified in each mapping entry
       buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-      silent = true, -- use `silent` when creating keymaps
-      noremap = true, -- use `noremap` when creating keymaps
-      nowait = true, -- use `nowait` when creating keymaps
     },
     -- NOTE: Prefer using : over <cmd> as the latter avoids going back in normal-mode.
     -- see https://neovim.io/doc/user/map.html#:map-cmd
     vmappings = {
-      {
-        mode = { "v" },
-        { "<leader>/", "<Plug>(comment_toggle_linewise_visual)", desc = "Comment toggle linewise (visual)", nowait = true, remap = false },
-        { "<leader>l", group = "LSP", nowait = true, remap = false },
-        { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Action", nowait = true, remap = false },
-        { "<leader>g", group = "Git", nowait = true, remap = false },
-        { "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", desc = "Reset Hunk", nowait = true, remap = false },
-        { "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", desc = "Stage Hunk", nowait = true, remap = false },
-      },
+      { "<leader>/", "<Plug>(comment_toggle_linewise_visual)", desc = "Comment toggle linewise (visual)", nowait = true, remap = false },
+      { "<leader>l", group = "LSP", nowait = true, remap = false },
+      { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Action", nowait = true, remap = false },
+      { "<leader>g", group = "Git", nowait = true, remap = false },
+      { "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", desc = "Reset Hunk", nowait = true, remap = false },
+      { "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", desc = "Stage Hunk", nowait = true, remap = false },
     },
     mappings = {
       { "<leader>;", "<cmd>Alpha<CR>", desc = "Dashboard", nowait = true, remap = false },
@@ -110,9 +101,7 @@ M.config = function()
       { "<leader>q", "<cmd>confirm q<CR>", desc = "Quit", nowait = true, remap = false },
       { "<leader>/", "<Plug>(comment_toggle_linewise_current)", desc = "Comment toggle current line", nowait = true, remap = false },
       { "<leader>c", "<cmd>BufferKill<CR>", desc = "Close Buffer", nowait = true, remap = false },
-      { "<leader>f", function()
-          require("lvim.core.telescope.custom-finders").find_project_files { previewer = false }
-        end, desc = "Find File", nowait = true, remap = false },
+      { "<leader>f", "<cmd>lua require('lvim.core.telescope.custom-finders').find_project_files({ previewer = false })<cr>", desc = "Find File", nowait = true, remap = false },
       { "<leader>h", "<cmd>nohlsearch<CR>", desc = "No Highlight", nowait = true, remap = false },
       { "<leader>e", "<cmd>NvimTreeToggle<CR>", desc = "Explorer", nowait = true, remap = false },
       { "<leader>b", group = "Buffers", nowait = true, remap = false },
@@ -229,8 +218,13 @@ end
 
 M.setup = function()
   -- Ensure leader is set before which-key setup
+  -- This must happen before which-key processes mappings
   if not vim.g.mapleader then
     vim.g.mapleader = (lvim.leader == "space" and " ") or (lvim.leader or " ")
+  end
+  -- Also set maplocalleader if not set
+  if not vim.g.maplocalleader then
+    vim.g.maplocalleader = "\\"
   end
 
   local which_key = require "which-key"
@@ -243,6 +237,7 @@ M.setup = function()
   local mappings = lvim.builtin.which_key.mappings
   local vmappings = lvim.builtin.which_key.vmappings
 
+  -- Register mappings - which-key will expand <leader> automatically
   which_key.register(mappings, opts)
   which_key.register(vmappings, vopts)
 
