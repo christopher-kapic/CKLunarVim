@@ -26,8 +26,8 @@ M.config = function()
       },
       -- add operators that will trigger motion and text object completion
       -- to enable all native operators, set the preset / operators plugin above
-      operators = { gc = "Comments" },
-      key_labels = {
+      defer = { gc = "Comments" },
+      replace = {
         -- override the label used to display some keys. It doesn't effect WK in any other way.
         -- For example:
         -- ["<space>"] = "SPC",
@@ -39,11 +39,11 @@ M.config = function()
         separator = lvim.icons.ui.BoldArrowRight, -- symbol used between a key and it's label
         group = lvim.icons.ui.Plus, -- symbol prepended to a group
       },
-      popup_mappings = {
+      keys = {
         scroll_down = "<c-d>", -- binding to scroll down inside the popup
         scroll_up = "<c-u>", -- binding to scroll up inside the popup
       },
-      window = {
+      win = {
         border = "single", -- none, single, double, shadow
         position = "bottom", -- bottom, top
         margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
@@ -56,18 +56,22 @@ M.config = function()
         spacing = 3, -- spacing between columns
         align = "left", -- align columns left, center or right
       },
-      ignore_missing = true, -- enable this to hide mappings for which you didn't specify a label
-      hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
+      -- filter option replaces ignore_missing
+      -- Set to nil to show all mappings (old ignore_missing = false)
+      -- Or provide a function to filter mappings
+      filter = nil,
       show_help = true, -- show help message on the command line when the popup is visible
       show_keys = true, -- show the currently pressed key and its label as a message in the command line
-      triggers = "auto", -- automatically setup triggers
-      -- triggers = {"<leader>"} -- or specify a list manually
-      triggers_blacklist = {
-        -- list of mode / prefixes that should never be hooked by WhichKey
-        -- this is mostly relevant for key maps that start with a native binding
-        -- most people should not need to change this
-        i = { "j", "k" },
-        v = { "j", "k" },
+      -- triggers must be a table (not "auto" string)
+      -- blacklist is merged into triggers table
+      triggers = {
+        "<leader>", -- automatically setup triggers for <leader>
+        blacklist = {
+          -- list of mode / prefixes that should never be hooked by WhichKey
+          -- this is mostly relevant for key maps that start with a native binding
+          i = { "j", "k" },
+          v = { "j", "k" },
+        },
       },
       -- disable the WhichKey popup for certain buf types and file types.
       -- Disabled by default for Telescope
@@ -312,6 +316,11 @@ M.config = function()
 end
 
 M.setup = function()
+  -- Ensure leader is set before which-key setup
+  if not vim.g.mapleader then
+    vim.g.mapleader = (lvim.leader == "space" and " ") or (lvim.leader or " ")
+  end
+
   local which_key = require "which-key"
 
   which_key.setup(lvim.builtin.which_key.setup)
