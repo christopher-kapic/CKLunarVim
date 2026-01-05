@@ -220,6 +220,11 @@ local core_plugins = {
     enabled = lvim.use_icons,
     lazy = true,
   },
+  {
+    "nvim-mini/mini.icons",
+    enabled = lvim.use_icons,
+    lazy = true,
+  },
 
   -- Status Line and Bufferline
   {
