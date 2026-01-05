@@ -21,7 +21,6 @@ M.config = function()
       },
       indent = {
         char = lvim.icons.ui.LineLeft,
-        first_indent_level = 1,
       },
       scope = {
         enabled = false,
