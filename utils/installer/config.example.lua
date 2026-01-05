@@ -126,6 +126,19 @@ lvim.plugins = {
           show_integration_count = false, -- Don't show integration count
         },
       })
+
+      -- Hide statusline and winbar for minimap windows to prevent "content" text from showing
+      vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+        pattern = "*",
+        callback = function()
+          if vim.bo.filetype == "minimap" then
+            local win_id = vim.api.nvim_get_current_win()
+            vim.wo[win_id].statusline = ""
+            vim.wo[win_id].winbar = ""
+          end
+        end,
+        desc = "Hide statusline and winbar in minimap windows",
+      })
     end,
   },
 }
@@ -149,6 +162,8 @@ lvim.autocommands = {
           "TelescopePrompt", -- Telescope prompts
           "alpha", -- Dashboard
           "netrw", -- Netrw file browser
+          "dirvish", -- Dirvish file browser
+          "lir", -- Lir file browser
         }
 
         local map = require("mini.map")
@@ -156,9 +171,16 @@ lvim.autocommands = {
         if vim.tbl_contains(exclude_ft, vim.o.filetype) then
           vim.b.minimap_disable = true
           map.close()
-        -- Open minimap for regular buffers
+        -- Open minimap only for regular file buffers (not directories)
         elseif vim.o.buftype == "" then
-          map.open()
+          local bufname = vim.api.nvim_buf_get_name(0)
+          -- Only open minimap if buffer has a name and it's a file (not a directory)
+          if bufname ~= "" and vim.fn.filereadable(bufname) == 1 and vim.fn.isdirectory(bufname) == 0 then
+            map.open()
+          else
+            -- Close minimap for directories or empty buffers
+            map.close()
+          end
         end
       end,
     },
