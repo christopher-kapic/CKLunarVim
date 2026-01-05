@@ -1,43 +1,101 @@
 ![lunarvim_logo_dark](https://user-images.githubusercontent.com/59826753/159940098-54284f26-f1da-4481-8b03-1deb34c57533.png)
 
 <div align="center"><p>
-    <a href="https://github.com/lunarvim/LunarVim/releases/latest">
-      <img alt="Latest release" src="https://img.shields.io/github/v/release/LunarVim/LunarVim?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41" />
+    <a href="https://github.com/christopher-kapic/CKLunarVim/releases/latest">
+      <img alt="Latest release" src="https://img.shields.io/github/v/release/christopher-kapic/CKLunarVim?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41" />
     </a>
-    <a href="https://github.com/lunarvim/LunarVim/pulse">
-      <img alt="Last commit" src="https://img.shields.io/github/last-commit/lunarvim/LunarVim?style=for-the-badge&logo=starship&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41"/>
+    <a href="https://github.com/christopher-kapic/CKLunarVim/pulse">
+      <img alt="Last commit" src="https://img.shields.io/github/last-commit/christopher-kapic/CKLunarVim?style=for-the-badge&logo=starship&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
-    <a href="https://github.com/lunarvim/LunarVim/blob/main/LICENSE">
-      <img alt="License" src="https://img.shields.io/github/license/lunarvim/lunarvim?style=for-the-badge&logo=starship&color=ee999f&logoColor=D9E0EE&labelColor=302D41" />
+    <a href="https://github.com/christopher-kapic/CKLunarVim/blob/main/LICENSE">
+      <img alt="License" src="https://img.shields.io/github/license/christopher-kapic/CKLunarVim?style=for-the-badge&logo=starship&color=ee999f&logoColor=D9E0EE&labelColor=302D41" />
     </a>
-    <a href="https://github.com/LunarVim/LunarVim/stargazers">
-      <img alt="Stars" src="https://img.shields.io/github/stars/LunarVim/LunarVim?style=for-the-badge&logo=starship&color=c69ff5&logoColor=D9E0EE&labelColor=302D41" />
+    <a href="https://github.com/christopher-kapic/CKLunarVim/stargazers">
+      <img alt="Stars" src="https://img.shields.io/github/stars/christopher-kapic/CKLunarVim?style=for-the-badge&logo=starship&color=c69ff5&logoColor=D9E0EE&labelColor=302D41" />
     </a>
-    <a href="https://github.com/LunarVim/LunarVim/issues">
-      <img alt="Issues" src="https://img.shields.io/github/issues/LunarVim/LunarVim?style=for-the-badge&logo=bilibili&color=F5E0DC&logoColor=D9E0EE&labelColor=302D41" />
+    <a href="https://github.com/christopher-kapic/CKLunarVim/issues">
+      <img alt="Issues" src="https://img.shields.io/github/issues/christopher-kapic/CKLunarVim?style=for-the-badge&logo=bilibili&color=F5E0DC&logoColor=D9E0EE&labelColor=302D41" />
     </a>
-    <a href="https://github.com/LunarVim/LunarVim">
-      <img alt="Repo Size" src="https://img.shields.io/github/repo-size/LunarVim/LunarVim?color=%23DDB6F2&label=SIZE&logo=codesandbox&style=for-the-badge&logoColor=D9E0EE&labelColor=302D41" />
-    </a>
-    <a href="https://patreon.com/chrisatmachine" title="Donate to this project using Patreon">
-      <img alt="Patreon donate button" src="https://img.shields.io/badge/patreon-donate-yellow.svg?style=for-the-badge&logo=starship&color=f5a97f&logoColor=D9E0EE&labelColor=302D41" />
-    </a>
-    <a href="https://twitter.com/intent/follow?screen_name=chrisatmachine">
-      <img alt="follow on Twitter" src="https://img.shields.io/twitter/follow/chrisatmachine?style=for-the-badge&logo=twitter&color=8aadf3&logoColor=D9E0EE&labelColor=302D41" />
+    <a href="https://github.com/christopher-kapic/CKLunarVim">
+      <img alt="Repo Size" src="https://img.shields.io/github/repo-size/christopher-kapic/CKLunarVim?color=%23DDB6F2&label=SIZE&logo=codesandbox&style=for-the-badge&logoColor=D9E0EE&labelColor=302D41" />
     </a>
 
   <p align="center">
-    <img src="https://stars.medv.io/LunarVim/LunarVim.svg", title="commits"/>
+    <img src="https://stars.medv.io/christopher-kapic/CKLunarVim.svg", title="commits"/>
   </p>
 
-An IDE layer for Neovim with sane defaults. Completely free and community driven.
+## ⚠️ Fork Notice
+
+**CKLunarVim is a fork of [LunarVim](https://github.com/LunarVim/LunarVim).**
+
+This fork is **shamelessly vibecoded** and maintained independently. If there are ever updates to upstream LunarVim, **no effort will be made to reconcile with them**. From this point forward, CKLunarVim should be considered its own project.
+
+This fork has been updated to work with **Neovim 0.11.5** and the latest versions of all packages, while the upstream LunarVim distribution does not work with Neovim versions after 0.9.5.
 
 ---
 
-**[<kbd> <br> Install <br> </kbd>][Install]** 
-**[<kbd> <br> Configure <br> </kbd>][Configure]** 
-**[<kbd> <br> Troubleshooting <br> </kbd>][Troubleshoot]** 
-**[<kbd> <br> Contribute <br> </kbd>][Contribute]**
+An IDE layer for Neovim with sane defaults. Completely free and community driven.
+
+</div>
+
+---
+
+## Installation
+
+### Prerequisites
+
+- **Neovim 0.11.5 or higher** (required)
+- Git
+- A C compiler (for building some plugins)
+- Make (for building some plugins)
+
+### Quick Install
+
+#### Linux / macOS
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/christopher-kapic/CKLunarVim/master/utils/installer/install.sh)
+```
+
+Or download and run the installer:
+
+```bash
+git clone https://github.com/christopher-kapic/CKLunarVim.git
+cd CKLunarVim
+bash utils/installer/install.sh
+```
+
+#### Windows (PowerShell)
+
+```powershell
+powershell -ExecutionPolicy Bypass -Command "& { irm https://raw.githubusercontent.com/christopher-kapic/CKLunarVim/master/utils/installer/install.ps1 | iex }"
+```
+
+Or download and run the installer:
+
+```powershell
+git clone https://github.com/christopher-kapic/CKLunarVim.git
+cd CKLunarVim
+powershell -ExecutionPolicy Bypass -File utils/installer/install.ps1
+```
+
+### After Installation
+
+Once installed, you can start CKLunarVim by running:
+
+```bash
+lvim
+```
+
+The executable name remains `lvim` for compatibility with existing configurations and workflows.
+
+### Configuration
+
+Your configuration file will be located at:
+- **Linux/macOS**: `~/.config/lvim/config.lua`
+- **Windows**: `%LOCALAPPDATA%\lvim\config.lua`
+
+Example configurations can be found in the repository at `utils/installer/config.example.lua`.
 
 ---
 
@@ -46,23 +104,79 @@ An IDE layer for Neovim with sane defaults. Completely free and community driven
 ![demo3](https://user-images.githubusercontent.com/29136904/191626246-ce0cc0c5-4b41-49e3-9cb7-4b1867ab0dcb.png)
 ![info](https://user-images.githubusercontent.com/29136904/191624942-3d75ef87-35cf-434d-850e-3e7cd5ce2ad0.png)
 
-<!----------------------------------------------------------------------------->
+---
 
-## Socials
+## Features
 
-<p align="center">
-<a href="https://github.com/Lunarvim"><img src="https://user-images.githubusercontent.com/696094/196835284-c52d4bd1-7034-439e-848b-47d4f2933dff.svg" width="64" height="64" alt="Github Logo"/></a> <img src="assets/misc/transparent.png" height="1" width="5"/> <a href="https://discord.gg/Xb9B4Ny"><img src="https://user-images.githubusercontent.com/696094/196835282-f5c47d66-29b7-4210-9ee0-d9cdecde3559.svg" width="64" height="64" alt="Discord Logo"/></a> <img src="assets/misc/transparent.png" height="1" width="5"/> <a href="https://twitter.com/chrisatmachine"><img src="https://user-images.githubusercontent.com/696094/196835281-52617611-ede6-40da-a4bc-8c5025622bbf.svg" width="64" height="64" alt="Twitter Logo"/></a> <img src="assets/misc/transparent.png" height="1" width="5"/> <a href="https://reddit.com/r/Lunarvim"><img src="https://user-images.githubusercontent.com/696094/196835278-041a4f99-28e1-4a93-8e35-c8912f1089fc.svg" width="64" height="64" alt="Reddit Logo"/></a>
-</p>
+- Modern IDE features for Neovim
+- LSP support with automatic server installation
+- Beautiful UI with customizable themes
+- Extensive plugin ecosystem
+- Optimized for Neovim 0.11.5+
 
-[Contribute]: https://github.com/LunarVim/LunarVim/blob/master/CONTRIBUTING.md
-[Install]: https://www.lunarvim.org/docs/installation
-[Troubleshoot]: https://www.lunarvim.org/docs/troubleshooting
-[Configure]: https://www.lunarvim.org/docs/configuration
+---
+
+## Updating
+
+To update CKLunarVim, run:
+
+```bash
+lvim +LvimUpdate
+```
+
+Or manually pull the latest changes:
+
+```bash
+cd ~/.local/share/lunarvim/lvim  # or your LUNARVIM_BASE_DIR
+git pull
+```
+
+---
+
+## Uninstalling
+
+### Linux / macOS
+
+```bash
+bash ~/.local/share/lunarvim/lvim/utils/installer/uninstall.sh
+```
+
+### Windows
+
+```powershell
+powershell -ExecutionPolicy Bypass -File %LOCALAPPDATA%\lunarvim\lvim\utils\installer\uninstall.ps1
+```
+
+---
+
+## Differences from Upstream LunarVim
+
+- **Neovim 0.11.5+ support**: Works with the latest Neovim versions
+- **Updated plugin versions**: All plugins updated to latest compatible versions
+- **Independent development**: No synchronization with upstream
+
+---
+
+## Contributing
+
+Contributions are welcome! Please note that this is an independent fork, so contributions should align with the direction of this project rather than upstream LunarVim.
+
+---
+
+## License
+
+This project is licensed under the GPL-3.0 license - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## Acknowledgments
+
+CKLunarVim is a fork of [LunarVim](https://github.com/LunarVim/LunarVim), which is an excellent Neovim distribution. This fork exists to provide support for newer Neovim versions and maintain an independent development path.
+
+---
 
 ## Thanks to all contributors
 
-<a href="https://github.com/Lunarvim/Lunarvim/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Lunarvim/Lunarvim" />
+<a href="https://github.com/christopher-kapic/CKLunarVim/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=christopher-kapic/CKLunarVim" />
 </a>
-
-</div>

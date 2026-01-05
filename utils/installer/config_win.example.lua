@@ -1,3 +1,8 @@
+-- CKLunarVim Configuration (Windows)
+-- This is a fork of LunarVim, updated for Neovim 0.11.5+
+--
+-- Repository: https://github.com/christopher-kapic/CKLunarVim
+-- Note: Links below are for upstream LunarVim (may not be applicable to this fork)
 -- Read the docs: https://www.lunarvim.org/docs/configuration
 -- Example configs: https://github.com/LunarVim/starter.lvim
 -- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6

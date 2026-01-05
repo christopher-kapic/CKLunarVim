@@ -7,7 +7,7 @@ local function deprecate(name, alternative)
     return
   end
 
-  alternative = alternative or "See https://github.com/LunarVim/LunarVim#breaking-changes"
+  alternative = alternative or "See https://github.com/christopher-kapic/CKLunarVim#breaking-changes"
 
   local trace = debug.getinfo(3, "Sl")
   local shorter_src = trace.short_src

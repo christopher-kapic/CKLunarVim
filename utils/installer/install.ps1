@@ -6,7 +6,7 @@ if ($PSVersionTable.PSVersion -lt 7.1) {
 
 # set script variables
 $LV_BRANCH = $LV_BRANCH ?? "master"
-$LV_REMOTE = $LV_REMOTE ??  "lunarvim/lunarvim.git"
+$LV_REMOTE = $LV_REMOTE ??  "christopher-kapic/CKLunarVim.git"
 $INSTALL_PREFIX = $INSTALL_PREFIX ?? "$HOME\.local"
 
 $env:XDG_DATA_HOME = $env:XDG_DATA_HOME ?? $env:APPDATA

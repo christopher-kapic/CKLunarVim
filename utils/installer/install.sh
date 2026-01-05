@@ -5,7 +5,7 @@ OS="$(uname -s)"
 
 #Set branch to master unless specified by the user
 declare -x LV_BRANCH="${LV_BRANCH:-"master"}"
-declare -xr LV_REMOTE="${LV_REMOTE:-lunarvim/lunarvim.git}"
+declare -xr LV_REMOTE="${LV_REMOTE:-christopher-kapic/CKLunarVim.git}"
 declare -xr INSTALL_PREFIX="${INSTALL_PREFIX:-"$HOME/.local"}"
 
 declare -xr XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
@@ -206,11 +206,11 @@ function print_missing_dep_msg() {
 }
 
 function check_neovim_min_version() {
-  local verify_version_cmd='if !has("nvim-0.9") | cquit | else | quit | endif'
+  local verify_version_cmd='if !has("nvim-0.11") | cquit | else | quit | endif'
 
   # exit with an error if min_version not found
   if ! nvim --headless -u NONE -c "$verify_version_cmd"; then
-    echo "[ERROR]: LunarVim requires at least Neovim v0.9 or higher"
+    echo "[ERROR]: CKLunarVim requires at least Neovim v0.11 or higher"
     exit 1
   fi
 }
