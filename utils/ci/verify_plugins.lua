@@ -20,7 +20,14 @@ end
 local get_default_sha1 = function(spec)
   local short_name, _ = get_short_name(spec)
   assert(default_sha1[short_name])
-  return default_sha1[short_name].commit
+  local commit = default_sha1[short_name].commit
+  -- Parse commit hash range format (old:new) to extract only the new hash
+  -- If no colon, use the whole string (single hash format)
+  local colon_pos = commit:find(":")
+  if colon_pos then
+    return commit:sub(colon_pos + 1)
+  end
+  return commit
 end
 
 local is_directory = require("lvim.utils").is_directory
