@@ -91,11 +91,114 @@ The executable name remains `lvim` for compatibility with existing configuration
 
 ### Configuration
 
+CKLunarVim is highly customizable through its configuration file. On first launch, a default configuration file will be automatically created if one doesn't exist.
+
+#### Configuration File Location
+
 Your configuration file will be located at:
 - **Linux/macOS**: `~/.config/lvim/config.lua`
 - **Windows**: `%LOCALAPPDATA%\lvim\config.lua`
 
-Example configurations can be found in the repository at `utils/installer/config.example.lua`.
+#### Getting Started
+
+1. **First-time setup**: When you first run `lvim`, a default configuration file will be automatically created at the location above.
+
+2. **Using the example config**: A comprehensive example configuration is available in the repository at `utils/installer/config.example.lua`. You can copy this file to your config location:
+
+   ```bash
+   # Linux/macOS
+   cp utils/installer/config.example.lua ~/.config/lvim/config.lua
+   
+   # Windows (PowerShell)
+   Copy-Item utils\installer\config.example.lua $env:LOCALAPPDATA\lvim\config.lua
+   ```
+
+3. **Reloading configuration**: After making changes to your config file, you can reload it without restarting Neovim:
+   - Press `<Space>rr` (leader key + r + r)
+   - Or run `:LvimReload` in command mode
+
+#### Key Configuration Options
+
+The example configuration includes the following features:
+
+**Basic Settings:**
+- `lvim.format_on_save.enabled` - Automatically format code on save
+- `lvim.colorscheme` - Set your preferred colorscheme (e.g., "tokyonight", "lunar", "habamax")
+- `lvim.transparent_window` - Enable transparent window background
+- `lvim.leader` - Set your leader key (default: "space")
+- `lvim.log.level` - Control logging verbosity
+
+**Builtin Plugins:**
+- `lvim.builtin.alpha` - Configure the startup dashboard
+- `lvim.builtin.terminal` - Terminal integration settings
+- `lvim.builtin.nvimtree` - File explorer configuration
+- `lvim.builtin.treesitter` - Syntax highlighting and language parsers
+- `lvim.builtin.mason` - LSP/DAP/formatter installer UI settings
+
+**Custom Plugins:**
+You can add your own plugins using the `lvim.plugins` table. The example config includes:
+- `f-person/git-blame.nvim` - Git blame information
+- `echasnovski/mini.map` - Code minimap sidebar
+
+**Autocommands:**
+Customize behavior based on file types or events using `lvim.autocommands` or `vim.api.nvim_create_autocmd()`.
+
+#### Common Customizations
+
+**Change Colorscheme:**
+```lua
+lvim.colorscheme = "tokyonight"  -- or "lunar", "habamax", etc.
+```
+
+**Enable/Disable Format on Save:**
+```lua
+lvim.format_on_save.enabled = true  -- or false
+```
+
+**Add Custom Plugins:**
+```lua
+lvim.plugins = {
+  {
+    "username/plugin-name",
+    config = function()
+      -- Plugin configuration here
+    end,
+  },
+}
+```
+
+**Configure Treesitter Parsers:**
+```lua
+lvim.builtin.treesitter.ensure_installed = {
+  "python",
+  "javascript",
+  "lua",
+  -- Add more languages as needed
+}
+```
+
+**Custom Key Mappings:**
+```lua
+lvim.keys.normal_mode["<leader>k"] = function()
+  -- Your custom function here
+end
+```
+
+#### Documentation and Resources
+
+- **Example Config**: See `utils/installer/config.example.lua` for a fully documented example
+- **Upstream Docs**: [LunarVim Configuration Docs](https://www.lunarvim.org/docs/configuration) (may not fully apply to this fork)
+- **Example Configs**: [LunarVim Starter Configs](https://github.com/LunarVim/starter.lvim)
+- **Video Tutorials**: [YouTube Playlist](https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6)
+
+#### Troubleshooting
+
+If you encounter issues with your configuration:
+
+1. **Check for syntax errors**: The config file is Lua, so ensure proper syntax
+2. **View logs**: Check the log viewer with `<Space>ll` (leader + l + l)
+3. **Reset to defaults**: Delete your config file and restart CKLunarVim to regenerate defaults
+4. **Validate config**: Run `:checkhealth lvim` to check for configuration issues
 
 ---
 
