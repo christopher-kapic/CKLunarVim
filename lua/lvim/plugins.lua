@@ -220,11 +220,6 @@ local core_plugins = {
     enabled = lvim.use_icons,
     lazy = true,
   },
-  {
-    "nvim-mini/mini.icons",
-    enabled = lvim.use_icons,
-    lazy = true,
-  },
 
   -- Status Line and Bufferline
   {
@@ -330,7 +325,6 @@ local core_plugins = {
 
   {
     "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
     config = function()
       require("lvim.core.indentlines").setup()
     end,
@@ -378,17 +372,7 @@ end
 
 local get_default_sha1 = function(spec)
   local short_name = get_short_name(spec[1])
-  local commit = default_sha1[short_name] and default_sha1[short_name].commit
-  if not commit then
-    return nil
-  end
-  -- Parse commit hash range format (old:new) to extract only the new hash
-  -- If no colon, use the whole string (single hash format)
-  local colon_pos = commit:find(":")
-  if colon_pos then
-    return commit:sub(colon_pos + 1)
-  end
-  return commit
+  return default_sha1[short_name] and default_sha1[short_name].commit
 end
 
 if not vim.env.LVIM_DEV_MODE then

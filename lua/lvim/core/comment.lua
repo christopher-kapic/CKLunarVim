@@ -27,8 +27,7 @@ function M.config()
       basic = true,
       ---Extra mapping
       ---Includes `gco`, `gcO`, `gcA`
-      ---Disabled to avoid overlaps with operator-pending mappings (gc/gb)
-      extra = false,
+      extra = true,
     },
 
     ---LHS of line and block comment toggle mapping in NORMAL/VISUAL mode

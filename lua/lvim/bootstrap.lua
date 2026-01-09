@@ -1,7 +1,7 @@
 local M = {}
 
 if vim.fn.has "nvim-0.11" ~= 1 then
-  vim.notify("Please upgrade your Neovim base installation. CKLunarVim requires v0.11+", vim.log.levels.WARN)
+  vim.notify("Please upgrade your Neovim base installation. Lunarvim requires v0.11+", vim.log.levels.WARN)
   vim.wait(5000, function()
     ---@diagnostic disable-next-line: redundant-return-value
     return false
