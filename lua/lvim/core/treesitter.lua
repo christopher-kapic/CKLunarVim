@@ -102,12 +102,27 @@ function M.setup()
     return
   end
 
-  local ts_status_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
-  if not ts_status_ok then
-    Log:error "Failed to load nvim-treesitter.configs"
-    return
-  end
+  -- Defer setup to ensure plugin is fully loaded when lazy-loaded
+  vim.schedule(function()
+    local ts_status_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
+    if not ts_status_ok then
+      -- Retry once after a short delay in case plugin is still loading
+      vim.defer_fn(function()
+        local retry_ok, retry_configs = pcall(require, "nvim-treesitter.configs")
+        if not retry_ok then
+          Log:debug "Failed to load nvim-treesitter.configs after retry (plugin may not be installed)"
+          return
+        end
+        M._do_setup(retry_configs)
+      end, 100)
+      return
+    end
 
+    M._do_setup(treesitter_configs)
+  end)
+end
+
+function M._do_setup(treesitter_configs)
   local status_ok, ts_context_commentstring = pcall(require, "ts_context_commentstring")
   if not status_ok then
     Log:error "Failed to load ts_context_commentstring"
