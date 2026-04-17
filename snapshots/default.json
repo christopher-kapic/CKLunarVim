@@ -6,7 +6,7 @@
     "commit": "a62e108"
   },
   "alpha-nvim": {
-    "commit": "47ff466"
+    "commit": "6c6a89d"
   },
   "bigfile.nvim": {
     "commit": "33eb067"
@@ -57,7 +57,7 @@
     "commit": "b03fb0f"
   },
   "mini.icons": {
-    "commit": "7fdae24"
+    "commit": "bac6317"
   },
   "neodev.nvim": {
     "commit": "46aa467"
@@ -81,13 +81,13 @@
     "commit": "1a66cab"
   },
   "nvim-lspconfig": {
-    "commit": "8a9378a"
+    "commit": "4b7fbaa"
   },
   "nvim-navic": {
     "commit": "f5eba19"
   },
   "nvim-tree.lua": {
-    "commit": "509962f"
+    "commit": "d277467"
   },
   "nvim-treesitter": {
     "commit": "4916d65"
@@ -108,7 +108,7 @@
     "commit": "8c6bad7"
   },
   "schemastore.nvim": {
-    "commit": "b2e84d0"
+    "commit": "0ce1f8a"
   },
   "structlog.nvim": {
     "commit": "45b26a2"
