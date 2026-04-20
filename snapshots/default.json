@@ -33,7 +33,7 @@
     "commit": "6cd7280"
   },
   "gitsigns.nvim": {
-    "commit": "8d82c24"
+    "commit": "6d808f9"
   },
   "indent-blankline.nvim": {
     "commit": "d28a3f7"
@@ -66,7 +66,7 @@
     "commit": "bf56ac1"
   },
   "none-ls.nvim": {
-    "commit": "899e93f"
+    "commit": "e135361"
   },
   "nvim-autopairs": {
     "commit": "59bce2e"
@@ -81,7 +81,7 @@
     "commit": "1a66cab"
   },
   "nvim-lspconfig": {
-    "commit": "4b7fbaa"
+    "commit": "e05fb8c"
   },
   "nvim-navic": {
     "commit": "f5eba19"
@@ -108,7 +108,7 @@
     "commit": "8c6bad7"
   },
   "schemastore.nvim": {
-    "commit": "0ce1f8a"
+    "commit": "250aed7"
   },
   "structlog.nvim": {
     "commit": "45b26a2"
