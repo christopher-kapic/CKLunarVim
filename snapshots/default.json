@@ -54,7 +54,7 @@
     "commit": "0a3b42c"
   },
   "mason.nvim": {
-    "commit": "b03fb0f"
+    "commit": "12ddd18"
   },
   "mini.icons": {
     "commit": "bac6317"
@@ -81,7 +81,7 @@
     "commit": "1a66cab"
   },
   "nvim-lspconfig": {
-    "commit": "e05fb8c"
+    "commit": "81878de"
   },
   "nvim-navic": {
     "commit": "f5eba19"
@@ -108,7 +108,7 @@
     "commit": "8c6bad7"
   },
   "schemastore.nvim": {
-    "commit": "250aed7"
+    "commit": "d09eb13"
   },
   "structlog.nvim": {
     "commit": "45b26a2"
