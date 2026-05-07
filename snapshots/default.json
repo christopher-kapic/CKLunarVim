@@ -51,7 +51,7 @@
     "commit": "08bbc93"
   },
   "mason-lspconfig.nvim": {
-    "commit": "0c2823e"
+    "commit": "1423254"
   },
   "mason.nvim": {
     "commit": "cb8445f"
@@ -108,13 +108,13 @@
     "commit": "8c6bad7"
   },
   "schemastore.nvim": {
-    "commit": "6db1246"
+    "commit": "c8982fc"
   },
   "structlog.nvim": {
     "commit": "45b26a2"
   },
   "telescope-fzf-native.nvim": {
-    "commit": "6fea601"
+    "commit": "b25b749"
   },
   "telescope.nvim": {
     "commit": "a0bbec2"
