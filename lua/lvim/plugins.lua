@@ -128,6 +128,10 @@ local core_plugins = {
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
+    -- The plugin's default branch is the `main`-branch rewrite, which drops the
+    -- classic runtime API (`parsers.ft_to_lang`, `nvim-treesitter.configs`,
+    -- `ts_utils`) that telescope.nvim and this config still rely on.
+    branch = "master",
     -- run = ":TSUpdate",
     config = function()
       local utils = require "lvim.utils"
