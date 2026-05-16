@@ -86,6 +86,36 @@ local function get_dynamic_terminal_size(direction, size)
   end
 end
 
+--- Send a literal newline (\n) to the terminal job in the current buffer.
+--- Works around Neovim sending <CR> for both Enter and Shift+Enter, which
+--- interactive TUIs (REPLs, AI agents, ...) interpret as "submit".
+local function send_terminal_newline()
+  local job = vim.b.terminal_job_id
+  if job then
+    vim.fn.chansend(job, "\n")
+  end
+end
+
+--- Bind <S-CR>/<M-CR> -> newline in terminal mode for the given buffer.
+---@param bufnr integer
+local function set_newline_keymaps(bufnr)
+  local opts = { buffer = bufnr, silent = true, desc = "Send newline to terminal" }
+  vim.keymap.set("t", "<S-CR>", send_terminal_newline, opts)
+  vim.keymap.set("t", "<M-CR>", send_terminal_newline, opts)
+end
+
+--- Make a terminal buffer friendly to interactive TUIs: newline on
+--- <S-CR>/<M-CR>, plus pass Ctrl-h/j/k/l straight through to the program
+--- instead of letting the global term_mode window-nav maps (see
+--- lua/lvim/keymappings.lua) leave terminal mode and hide a floating window.
+---@param bufnr integer
+local function set_ai_keymaps(bufnr)
+  set_newline_keymaps(bufnr)
+  for _, key in ipairs { "<C-h>", "<C-j>", "<C-k>", "<C-l>" } do
+    vim.keymap.set("t", key, key, { buffer = bufnr, silent = true })
+  end
+end
+
 M.init = function()
   for i, exec in pairs(lvim.builtin.terminal.execs) do
     local direction = exec[4] or lvim.builtin.terminal.direction
@@ -104,53 +134,27 @@ M.init = function()
 
     M.add_exec(opts)
   end
-end
 
---- Send a literal newline (\n) to the terminal job in the current buffer.
---- Worked around Neovim sending <CR> for both Enter and Shift+Enter, which
---- interactive AI agent TUIs interpret as "submit".
-local function send_terminal_newline()
-  local job = vim.b.terminal_job_id
-  if job then
-    vim.fn.chansend(job, "\n")
-  end
-end
-
---- Bind <S-CR>/<M-CR> -> newline in terminal mode for the given buffer.
----@param bufnr integer
-local function set_newline_keymaps(bufnr)
-  local opts = { buffer = bufnr, silent = true, desc = "Send newline to terminal" }
-  vim.keymap.set("t", "<S-CR>", send_terminal_newline, opts)
-  vim.keymap.set("t", "<M-CR>", send_terminal_newline, opts)
-end
-
---- Make a terminal buffer friendly to interactive AI agent TUIs: newline on
---- <S-CR>/<M-CR>, plus pass Ctrl-h/j/k/l straight through to the program
---- instead of letting the global term_mode window-nav maps (see
---- lua/lvim/keymappings.lua) leave terminal mode and hide a floating window.
----@param bufnr integer
-local function set_ai_keymaps(bufnr)
-  set_newline_keymaps(bufnr)
-  for _, key in ipairs { "<C-h>", "<C-j>", "<C-k>", "<C-l>" } do
-    vim.keymap.set("t", key, key, { buffer = bufnr, silent = true })
-  end
+  -- Registered here (in init, which lazy.nvim always runs at startup) rather
+  -- than in M.setup, so it applies to every terminal -- including plain
+  -- :terminal buffers -- regardless of toggleterm's lazy loading. The flag is
+  -- read when a terminal opens, so user overrides in config.lua still apply.
+  local group = vim.api.nvim_create_augroup("LvimTerminalNewline", { clear = true })
+  vim.api.nvim_create_autocmd("TermOpen", {
+    group = group,
+    pattern = "*",
+    callback = function(args)
+      if lvim.builtin.terminal.newline_mapping then
+        set_newline_keymaps(args.buf)
+      end
+    end,
+    desc = "Send newline on <S-CR>/<M-CR> in terminals",
+  })
 end
 
 M.setup = function()
   local terminal = require "toggleterm"
   terminal.setup(lvim.builtin.terminal)
-
-  if lvim.builtin.terminal.newline_mapping then
-    local group = vim.api.nvim_create_augroup("LvimTerminalNewline", { clear = true })
-    vim.api.nvim_create_autocmd("TermOpen", {
-      group = group,
-      pattern = "term://*",
-      callback = function(args)
-        set_newline_keymaps(args.buf)
-      end,
-      desc = "Send newline on <S-CR>/<M-CR> in terminals",
-    })
-  end
 
   if lvim.builtin.terminal.on_config_done then
     lvim.builtin.terminal.on_config_done(terminal)
