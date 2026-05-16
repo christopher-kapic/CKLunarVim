@@ -19,10 +19,11 @@ M.config = function()
     direction = "float",
     close_on_exit = true, -- close the terminal window when the process exits
     auto_scroll = true, -- automatically scroll to the bottom on terminal output
-    -- Map <S-CR>/<M-CR> in terminal mode to send a literal newline to the
-    -- running program. Neovim's terminal sends <CR> for both Enter and
-    -- Shift+Enter, which AI agent TUIs treat as "submit"; this lets them
-    -- insert a line break instead. Set to false to opt out for all terminals.
+    -- Make newline work in terminal TUIs: maps <S-CR>/<M-CR> to send a real
+    -- newline, and passes Ctrl+J (literal newline, ASCII LF) through to the
+    -- program instead of CKLunarVim's terminal-mode <C-j> window-nav map.
+    -- Lets AI agents / REPLs insert a line break instead of submitting (or
+    -- closing a floating terminal). Set to false to opt out for all terminals.
     newline_mapping = true,
     shell = nil, -- change the default shell
     -- This field is only relevant if direction is set to 'float'
@@ -96,22 +97,28 @@ local function send_terminal_newline()
   end
 end
 
---- Bind <S-CR>/<M-CR> -> newline in terminal mode for the given buffer.
+--- Make newline work in terminal TUIs (REPLs, AI agents, ...) for the given
+--- buffer: <S-CR>/<M-CR> send a real newline, and <C-j> (literal newline,
+--- ASCII LF) is passed straight through to the program. The <C-j> map
+--- shadows the global term_mode <C-j> window-nav map (lua/lvim/keymappings.lua)
+--- for this buffer only, so Ctrl+J inserts a newline instead of leaving
+--- terminal mode and closing a floating terminal.
 ---@param bufnr integer
 local function set_newline_keymaps(bufnr)
   local opts = { buffer = bufnr, silent = true, desc = "Send newline to terminal" }
   vim.keymap.set("t", "<S-CR>", send_terminal_newline, opts)
   vim.keymap.set("t", "<M-CR>", send_terminal_newline, opts)
+  vim.keymap.set("t", "<C-j>", "<C-j>", { buffer = bufnr, silent = true })
 end
 
---- Make a terminal buffer friendly to interactive TUIs: newline on
---- <S-CR>/<M-CR>, plus pass Ctrl-h/j/k/l straight through to the program
---- instead of letting the global term_mode window-nav maps (see
---- lua/lvim/keymappings.lua) leave terminal mode and hide a floating window.
+--- Make a terminal buffer friendly to interactive TUIs: the newline keys
+--- (see set_newline_keymaps) plus pass the remaining Ctrl-h/k/l straight
+--- through to the program instead of letting the global term_mode window-nav
+--- maps (lua/lvim/keymappings.lua) leave terminal mode and hide a float.
 ---@param bufnr integer
 local function set_ai_keymaps(bufnr)
   set_newline_keymaps(bufnr)
-  for _, key in ipairs { "<C-h>", "<C-j>", "<C-k>", "<C-l>" } do
+  for _, key in ipairs { "<C-h>", "<C-k>", "<C-l>" } do
     vim.keymap.set("t", key, key, { buffer = bufnr, silent = true })
   end
 end
