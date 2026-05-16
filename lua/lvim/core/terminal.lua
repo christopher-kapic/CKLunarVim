@@ -19,6 +19,11 @@ M.config = function()
     direction = "float",
     close_on_exit = true, -- close the terminal window when the process exits
     auto_scroll = true, -- automatically scroll to the bottom on terminal output
+    -- Map <S-CR>/<M-CR> in terminal mode to send a literal newline to the
+    -- running program. Neovim's terminal sends <CR> for both Enter and
+    -- Shift+Enter, which AI agent TUIs treat as "submit"; this lets them
+    -- insert a line break instead. Set to false to opt out for all terminals.
+    newline_mapping = true,
     shell = nil, -- change the default shell
     -- This field is only relevant if direction is set to 'float'
     float_opts = {
@@ -101,9 +106,52 @@ M.init = function()
   end
 end
 
+--- Send a literal newline (\n) to the terminal job in the current buffer.
+--- Worked around Neovim sending <CR> for both Enter and Shift+Enter, which
+--- interactive AI agent TUIs interpret as "submit".
+local function send_terminal_newline()
+  local job = vim.b.terminal_job_id
+  if job then
+    vim.fn.chansend(job, "\n")
+  end
+end
+
+--- Bind <S-CR>/<M-CR> -> newline in terminal mode for the given buffer.
+---@param bufnr integer
+local function set_newline_keymaps(bufnr)
+  local opts = { buffer = bufnr, silent = true, desc = "Send newline to terminal" }
+  vim.keymap.set("t", "<S-CR>", send_terminal_newline, opts)
+  vim.keymap.set("t", "<M-CR>", send_terminal_newline, opts)
+end
+
+--- Make a terminal buffer friendly to interactive AI agent TUIs: newline on
+--- <S-CR>/<M-CR>, plus pass Ctrl-h/j/k/l straight through to the program
+--- instead of letting the global term_mode window-nav maps (see
+--- lua/lvim/keymappings.lua) leave terminal mode and hide a floating window.
+---@param bufnr integer
+local function set_ai_keymaps(bufnr)
+  set_newline_keymaps(bufnr)
+  for _, key in ipairs { "<C-h>", "<C-j>", "<C-k>", "<C-l>" } do
+    vim.keymap.set("t", key, key, { buffer = bufnr, silent = true })
+  end
+end
+
 M.setup = function()
   local terminal = require "toggleterm"
   terminal.setup(lvim.builtin.terminal)
+
+  if lvim.builtin.terminal.newline_mapping then
+    local group = vim.api.nvim_create_augroup("LvimTerminalNewline", { clear = true })
+    vim.api.nvim_create_autocmd("TermOpen", {
+      group = group,
+      pattern = "term://*",
+      callback = function(args)
+        set_newline_keymaps(args.buf)
+      end,
+      desc = "Send newline on <S-CR>/<M-CR> in terminals",
+    })
+  end
+
   if lvim.builtin.terminal.on_config_done then
     lvim.builtin.terminal.on_config_done(terminal)
   end
@@ -169,6 +217,38 @@ M.lazygit_toggle = function()
     count = 99,
   }
   lazygit:toggle()
+end
+
+--- Toggle a floating terminal running an interactive AI agent (or any
+--- command), with keymaps tuned for agent TUIs: <S-CR>/<M-CR> insert a
+--- newline, and Ctrl-h/j/k/l pass through to the agent instead of hiding
+--- the float. CKLunarVim is intentionally unopinionated about which agent;
+--- pass the command and bind it from your config.lua, e.g.:
+---   vim.keymap.set({ "n", "t" }, "<C-a>", function()
+---     require("lvim.core.terminal").ai_terminal_toggle "opencode"
+---   end, { desc = "AI agent terminal" })
+---@param cmd string the agent command to run (e.g. "claude", "opencode", "aider")
+M.ai_terminal_toggle = function(cmd)
+  if type(cmd) ~= "string" or cmd == "" then
+    Log:error "ai_terminal_toggle: expected a non-empty command string"
+    return
+  end
+  local Terminal = require("toggleterm.terminal").Terminal
+  local agent = Terminal:new {
+    cmd = cmd,
+    hidden = true,
+    direction = "float",
+    float_opts = {
+      border = lvim.builtin.terminal.float_opts.border,
+    },
+    on_open = function(term)
+      vim.cmd "startinsert!"
+      set_ai_keymaps(term.bufnr)
+    end,
+    on_close = function(_) end,
+    count = 98,
+  }
+  agent:toggle()
 end
 
 return M
