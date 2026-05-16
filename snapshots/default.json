@@ -51,7 +51,7 @@
     "commit": "08bbc93"
   },
   "mason-lspconfig.nvim": {
-    "commit": "eaa3488"
+    "commit": "7b01e29"
   },
   "mason.nvim": {
     "commit": "8e921c2"
@@ -81,13 +81,13 @@
     "commit": "1a66cab"
   },
   "nvim-lspconfig": {
-    "commit": "8f7e640"
+    "commit": "f9349d4"
   },
   "nvim-navic": {
     "commit": "f5eba19"
   },
   "nvim-tree.lua": {
-    "commit": "f9bfc00"
+    "commit": "07f541f"
   },
   "nvim-treesitter": {
     "commit": "cf12346"
@@ -108,7 +108,7 @@
     "commit": "8c6bad7"
   },
   "schemastore.nvim": {
-    "commit": "1c28767"
+    "commit": "e0883b2"
   },
   "structlog.nvim": {
     "commit": "45b26a2"
