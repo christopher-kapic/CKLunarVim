@@ -122,6 +122,63 @@ function M.setup()
   end)
 end
 
+-- Neovim 0.12 dropped the `all=false` option for treesitter query
+-- predicates/directives, so the handler contract is now always
+-- `match: table<integer, TSNode[]>` (a node list per capture id). The frozen
+-- nvim-treesitter `master` branch registers every custom predicate/directive
+-- with `all=false` and reads `match[id]` as a single node, so on 0.12 it
+-- crashes with "attempt to call method 'range' (a nil value)" (e.g. opening
+-- markdown with a fenced code block, via #set-lang-from-info-string!).
+--
+-- Re-run nvim-treesitter's predicate module through a thin wrapper that
+-- collapses the node list back to the single node those (now immutable,
+-- archived) handlers were written for. Generic over every directive/predicate
+-- the module defines, and uses only the first-class vim.treesitter.query API.
+function M._fix_legacy_query_handlers()
+  local tsq = vim.treesitter.query
+  if type(tsq) ~= "table" or type(tsq.add_directive) ~= "function" then
+    return
+  end
+
+  local function legacy_match(match)
+    if type(match) ~= "table" then
+      return match
+    end
+    local single = {}
+    for id, nodes in pairs(match) do
+      -- Pre-0.12 `all=false` exposed the last captured node for an id.
+      single[id] = type(nodes) == "table" and nodes[#nodes] or nodes
+    end
+    return single
+  end
+
+  local function wrap(handler)
+    return function(match, ...)
+      return handler(legacy_match(match), ...)
+    end
+  end
+
+  local orig_add_predicate = tsq.add_predicate
+  local orig_add_directive = tsq.add_directive
+  tsq.add_predicate = function(name, handler, opts)
+    return orig_add_predicate(name, wrap(handler), opts)
+  end
+  tsq.add_directive = function(name, handler, opts)
+    return orig_add_directive(name, wrap(handler), opts)
+  end
+
+  -- Force the frozen module to re-register its handlers through the wrapper.
+  package.loaded["nvim-treesitter.query_predicates"] = nil
+  local ok, err = pcall(require, "nvim-treesitter.query_predicates")
+
+  tsq.add_predicate = orig_add_predicate
+  tsq.add_directive = orig_add_directive
+
+  if not ok then
+    Log:debug("Failed to re-register nvim-treesitter query handlers: " .. tostring(err))
+  end
+end
+
 function M._do_setup(treesitter_configs)
   local status_ok, ts_context_commentstring = pcall(require, "ts_context_commentstring")
   if not status_ok then
@@ -145,6 +202,9 @@ function M._do_setup(treesitter_configs)
   local ts_utils = require "nvim-treesitter.ts_utils"
   ts_utils.is_in_node_range = vim.treesitter.is_in_node_range
   ts_utils.get_node_range = vim.treesitter.get_node_range
+
+  -- Neovim 0.12 query predicate/directive contract change (see above)
+  M._fix_legacy_query_handlers()
 end
 
 return M
