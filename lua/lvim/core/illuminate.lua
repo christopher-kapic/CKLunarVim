@@ -6,9 +6,12 @@ M.config = function()
     on_config_done = nil,
     options = {
       -- providers: provider used to get references in the buffer, ordered by priority
+      -- NOTE: "treesitter" is intentionally omitted. It depends on `nvim-treesitter.locals`,
+      -- which crashes on Neovim 0.11+ ("attempt to call method 'parent' (a nil value)" in
+      -- locals.lua:286) and has been removed from nvim-treesitter's `main` branch — its
+      -- `master` branch is archived, so no upstream fix is coming.
       providers = {
         "lsp",
-        "treesitter",
         "regex",
       },
       -- delay: delay in milliseconds
