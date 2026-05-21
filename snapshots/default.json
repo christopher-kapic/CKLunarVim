@@ -3,7 +3,7 @@
     "commit": "e30b7f2"
   },
   "LuaSnip": {
-    "commit": "a62e108"
+    "commit": "0abc8f3"
   },
   "alpha-nvim": {
     "commit": "6c6a89d"
@@ -54,10 +54,10 @@
     "commit": "7b01e29"
   },
   "mason.nvim": {
-    "commit": "8e921c2"
+    "commit": "cbf8d28"
   },
   "mini.icons": {
-    "commit": "9c7b1b9"
+    "commit": "520995f"
   },
   "neodev.nvim": {
     "commit": "46aa467"
@@ -75,13 +75,13 @@
     "commit": "a1d5048"
   },
   "nvim-dap": {
-    "commit": "45a69eb"
+    "commit": "5317715"
   },
   "nvim-dap-ui": {
     "commit": "1a66cab"
   },
   "nvim-lspconfig": {
-    "commit": "f9349d4"
+    "commit": "deb0df6"
   },
   "nvim-navic": {
     "commit": "f5eba19"
@@ -96,7 +96,7 @@
     "commit": "6141a40"
   },
   "nvim-web-devicons": {
-    "commit": "2795c26"
+    "commit": "7d8dad2"
   },
   "onedarker.nvim": {
     "commit": "b00dd21"
@@ -108,7 +108,7 @@
     "commit": "8c6bad7"
   },
   "schemastore.nvim": {
-    "commit": "b0d5f48"
+    "commit": "59b4296"
   },
   "structlog.nvim": {
     "commit": "45b26a2"
